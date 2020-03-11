@@ -38,7 +38,7 @@ public class CaseService extends AbstractEntityService<Case, CaseRepository> {
 				.stream()
 				.map(this::buildDTO)
 				.collect(Collectors.toList());
-		return new PagedResult<>(caseDTOS, all.getTotalPages(), page, size);
+		return new PagedResult<>(caseDTOS, all.getTotalPages(), all.getTotalElements(), page, size);
 	}
 
 	public CaseDTO getCase(Long id) {

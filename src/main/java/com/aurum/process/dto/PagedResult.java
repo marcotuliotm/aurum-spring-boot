@@ -11,12 +11,14 @@ public class PagedResult<T> {
 	private int limit;
 	private long totalElements;
 	private List<T> elements;
+	private int totalPages;
 
-	public PagedResult(List<T> elements, long totalElements, int offset, int limit) {
+	public PagedResult(List<T> elements, int totalPages, long totalElements, int offset, int limit) {
 		this.elements = elements;
-		this.totalElements = totalElements;
+		this.totalPages = totalPages;
 		this.offset = offset;
 		this.limit = limit;
+		this.totalElements = totalElements;
 	}
 
 	public boolean hasMore() {
