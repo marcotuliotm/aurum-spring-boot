@@ -3,22 +3,15 @@ package com.aurum.process.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.gcp.pubsub.support.BasicAcknowledgeablePubsubMessage;
-import org.springframework.cloud.gcp.pubsub.support.GcpPubSubHeaders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aurum.process.domain.Case;
 import com.aurum.process.dto.CaseDTO;
-import com.aurum.process.dto.CaseLot;
 import com.aurum.process.dto.PagedResult;
-import com.aurum.process.pubsub.PubSubCaseGateway;
 import com.aurum.process.repository.CaseRepository;
 import com.google.common.base.Strings;
 
@@ -26,11 +19,8 @@ import com.google.common.base.Strings;
 public class CaseService extends AbstractEntityService<Case, CaseRepository> {
 	private static final String SEARCH = "search";
 
-	@Autowired
-	private PubSubCaseGateway pubSubCaseGateway;
-
 	@Transactional
-	public Long save(CaseDTO dto) {
+	public Long create(CaseDTO dto) {
 		final Case caseNew = new Case(dto);
 		return create(caseNew).getId();
 	}
@@ -54,18 +44,6 @@ public class CaseService extends AbstractEntityService<Case, CaseRepository> {
 	public CaseDTO getCase(Long id) {
 		final Case caseById = findById(id);
 		return buildDTO(caseById);
-	}
-
-	public void sendCases(CaseLot caseLot) {
-		caseLot.getCases()
-				.forEach(caseDTO -> pubSubCaseGateway.sendCaseToPubSub(caseDTO));
-	}
-
-	@ServiceActivator(inputChannel = "pubSubInputChannel")
-	public void messageReceiver(CaseDTO payload,
-								@Header(GcpPubSubHeaders.ORIGINAL_MESSAGE) BasicAcknowledgeablePubsubMessage message) {
-		save(payload);
-		message.ack();
 	}
 
 	@Transactional

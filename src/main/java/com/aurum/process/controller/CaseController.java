@@ -6,7 +6,6 @@ import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aurum.process.dto.Paths.Case;
 import com.aurum.process.dto.CaseDTO;
 import com.aurum.process.dto.PagedResult;
+import com.aurum.process.dto.Paths.Case;
 import com.aurum.process.service.CaseService;
 
 @RestController
 @RequestMapping(value = Case.CASE, produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin
 public class CaseController {
 
 	@Autowired
@@ -44,7 +42,7 @@ public class CaseController {
 
 	@PostMapping
 	public Long create(@RequestBody CaseDTO dto) {
-		return service.save(dto);
+		return service.create(dto);
 	}
 
 	@PutMapping("/{id}")
