@@ -64,7 +64,7 @@ public class CaseServiceTest {
 			create.setId(i);
 			cases.add(create);
 		});
-		when(repository.findBySearchGreaterThanEqual(eq("search"), any(PageRequest.class))).thenReturn(new PageImpl<>(cases));
+		when(repository.findBySearchEquals(eq("search"), any(PageRequest.class))).thenReturn(new PageImpl<>(cases));
 		final Case create = new Case(caseDTO);
 		create.setId(1L);
 		when(repository.findById(1L)).thenReturn(Optional.of(create));

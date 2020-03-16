@@ -18,5 +18,4 @@ public class AurumApplication {
 	public JacksonPubSubMessageConverter jacksonPubSubMessageConverter(ObjectMapper objectMapper) {
 		return new JacksonPubSubMessageConverter(objectMapper);
 	}
-
 }

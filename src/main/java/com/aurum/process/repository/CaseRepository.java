@@ -8,5 +8,5 @@ import com.aurum.process.domain.Case;
 
 @Repository
 public interface CaseRepository extends AbstractRepository<Case> {
-	Page<Case> findBySearchGreaterThanEqual(String search, Pageable pageable);
+	Page<Case> findBySearchEquals(String search, Pageable pageable);
 }

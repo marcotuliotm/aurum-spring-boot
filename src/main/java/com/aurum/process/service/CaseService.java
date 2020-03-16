@@ -64,7 +64,7 @@ public class CaseService extends AbstractEntityService<Case, CaseRepository> {
 		if (Strings.isNullOrEmpty(search)) {
 			all = repository.findAll(pageRequest);
 		} else {
-			all = repository.findBySearchGreaterThanEqual(search, pageRequest);
+			all = repository.findBySearchEquals(search, pageRequest);
 		}
 		return all;
 	}

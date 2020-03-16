@@ -4,6 +4,7 @@ package com.aurum.process.domain;
 import static com.google.common.base.Strings.emptyToNull;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,16 +15,17 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 
 import com.aurum.process.dto.Access;
 import com.aurum.process.dto.CaseDTO;
+import com.google.common.base.Strings;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-@Entity(name="cases")
+@Entity(name = "cases")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Case extends AbstractEntity{
+public class Case extends AbstractEntity {
 
 	@Size(max = 40)
 	private String folder;
@@ -47,7 +49,7 @@ public class Case extends AbstractEntity{
 	@NotNull
 	private Instant createdAt;
 
-	private String search;
+	private List<String> search;
 
 	public Case(CaseDTO dto) {
 		this.createdAt = Instant.now();
@@ -62,6 +64,17 @@ public class Case extends AbstractEntity{
 		this.description = dto.getDescription();
 		this.responsible = dto.getResponsible();
 		this.access = dto.getAccess();
-		this.search = emptyToNull(dto.getFolder()) + emptyToNull(dto.getTitle()) + emptyToNull(dto.getDescription());
+
+		final List<String> strings = new ArrayList<>();
+		addTokens(strings, dto.getFolder());
+		addTokens(strings, dto.getTitle());
+		addTokens(strings, dto.getDescription());
+		this.search = strings;
+	}
+
+	public void addTokens(List<String> strings, String folder) {
+		if (!Strings.isNullOrEmpty(folder)) {
+			strings.add(folder);
+		}
 	}
 }
